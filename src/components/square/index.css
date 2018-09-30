@@ -1,0 +1,14 @@
+.square {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid #31335c;
+  box-sizing: border-box;
+}
+
+.square--food {
+  background-color: #fff;
+}
+
+.square--snake {
+  background-color: #3ac56a;
+}

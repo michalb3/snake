@@ -1,0 +1,14 @@
+.points {
+  position: fixed;
+  right: 1.5625rem;
+  bottom: 1.25rem;
+  margin: 0;
+  font: 300 1.1875rem Roboto, Arial, sans-serif;
+  color: #5a5c7d;
+}
+
+.points__quantity {
+  display: inline-block;
+  margin-left: .3125rem;
+  font-weight: 400;
+}
