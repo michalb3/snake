@@ -79,10 +79,6 @@ class App extends Component {
         boardDimensions: {
           width: boardWidth,
           height: boardHeight,
-          margin: {
-            top: (innerHeight - boardHeight) / 2,
-            left: (innerWidth - boardWidth) / 2,
-          },
         },
       });
     }
@@ -146,18 +142,13 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.boardDimensions) {
-      const { width, height, margin } = this.state.boardDimensions;
+    const { boardDimensions } = this.state;
 
+    if (boardDimensions) {
       return (
         <div
           className="board"
-          style={ {
-            width: width,
-            height: height,
-            marginTop: margin.top,
-            marginLeft: margin.left,
-          } }
+          style={ boardDimensions }
         >
           <Snake
             getRandomPosition={ this.getRandomPosition }
