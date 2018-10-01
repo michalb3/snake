@@ -127,7 +127,7 @@ class Snake extends Component {
 
     snake.forEach((item, index) => {
       snake[index] = {
-        id: index,
+        id: this.snakeInitLength - index,
         top: top,
         left: left,
       };
@@ -193,7 +193,7 @@ class Snake extends Component {
         head.left === foodPosition.left
     ) {
       tail = {
-        id: head.id + 1,
+        id: tail.id + 1,
         top: tail.top,
         left: tail.left,
       };
