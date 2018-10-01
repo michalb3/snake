@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { ConfigContext } from '../../context.js';
 import Snake from '../snake';
 import Square from '../square';
@@ -25,12 +25,21 @@ class App extends Component {
 
   componentDidMount() {
     this.setBoardDimensions();
-    this.randomFoodPosition();
 
     window.addEventListener(
       'resize',
       this.windowResizeListener
     );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { boardDimensions, foodPosition } = this.state;
+
+    if (boardDimensions &&
+        !foodPosition
+    ) {
+      this.randomFoodPosition();
+    }
   }
 
   componentWillUnmount() {
@@ -85,15 +94,15 @@ class App extends Component {
   }
 
   getRandomPosition() {
-    const { innerWidth, innerHeight } = window;
-    const maxTop = Math.floor(innerHeight / this.sideOfSquare) - this.sideOfSquare;
-    const maxLeft = Math.floor(innerWidth / this.sideOfSquare) - this.sideOfSquare;
+    const { boardDimensions } = this.state;
+    const maxVertically = boardDimensions.height / this.sideOfSquare;
+    const maxHorizontally = boardDimensions.width / this.sideOfSquare;
 
     return {
-      // Random a number in the range of from 0 to { maxTop * this.sideOfSquare }
-      top: Math.floor(Math.random() * (maxTop + 1)) * this.sideOfSquare,
-      // Random a number in the range of from 0 to { maxLeft * this.sideOfSquare }
-      left: Math.floor(Math.random() * (maxLeft + 1)) * this.sideOfSquare,
+      // Random a number in the range of from 0 to { (maxVertically - 1) * this.sideOfSquare }
+      top: Math.floor(Math.random() * maxVertically) * this.sideOfSquare,
+      // Random a number in the range of from 0 to { (maxHorizontally - 1) * this.sideOfSquare }
+      left: Math.floor(Math.random() * maxHorizontally) * this.sideOfSquare,
     };
   }
 
@@ -142,7 +151,7 @@ class App extends Component {
   }
 
   render() {
-    const { boardDimensions } = this.state;
+    const { boardDimensions, foodPosition } = this.state;
 
     if (boardDimensions) {
       return (
@@ -150,18 +159,22 @@ class App extends Component {
           className="board"
           style={ boardDimensions }
         >
-          <Snake
-            getRandomPosition={ this.getRandomPosition }
-            boardDimensions={ this.state.boardDimensions }
-            foodPosition={ this.state.foodPosition }
-            randomFoodPosition={ this.randomFoodPosition }
-            setPoints={ this.setPoints }
-            gameOver={ this.gameOver }
-          />
-          <Square
-            className="square--food"
-            position={ this.state.foodPosition }
-          />
+          { foodPosition &&
+            <Fragment>
+              <Snake
+                getRandomPosition={ this.getRandomPosition }
+                boardDimensions={ this.state.boardDimensions }
+                foodPosition={ foodPosition }
+                randomFoodPosition={ this.randomFoodPosition }
+                setPoints={ this.setPoints }
+                gameOver={ this.gameOver }
+              />
+              <Square
+                className="square--food"
+                position={ foodPosition }
+              />
+            </Fragment>
+          }
           <Points points={ this.state.amountOfPoints } />
         </div>
       );
